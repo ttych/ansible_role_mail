@@ -8,6 +8,11 @@
           include: sysrc.yml key="{{ item }}_enable" value="NONE"
           loop: "{{ mail_sendmail_services }}"
 
+        - name: check periodic.conf status
+          stat:
+            path: "{{ mail_sendmail_periodic_conf }}"
+          register: t_mail_sendmail_periodic_conf_stat
+
         - name: have periodic.conf file
           file:
             path: "{{ mail_sendmail_periodic_conf }}"
@@ -15,6 +20,7 @@
             group: "{{ root_group }}"
             mode: "0644"
             state: touch
+          when: not t_mail_sendmail_periodic_conf_stat.stat.exists
 
         - name: disable periodic mail tasks
           lineinfile:

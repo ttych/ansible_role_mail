@@ -1,0 +1,28 @@
+---
+
+- name: unsetup sendmail
+  block:
+    - name: unsetup sendmail on FreeBSD
+      block:
+        - name: disable sendmail service
+          include: sysrc.yml key="{{ item }}_enable" value="NONE"
+          loop: "{{ mail_sendmail_services }}"
+
+        - name: have periodic.conf file
+          file:
+            path: "{{ mail_sendmail_periodic_conf }}"
+            owner: root
+            group: "{{ root_group }}"
+            mode: "0644"
+            state: touch
+
+        - name: disable periodic mail tasks
+          lineinfile:
+            path: "{{ mail_sendmail_periodic_conf }}"
+            regexp: "^{{ item }}="
+            line: "{{ item }}=\"NO\""
+          loop: "{{ mail_sendmail_periodic_conf_entries }}"
+
+      when: ansible_system == 'FreeBSD'
+
+  when: want_mail != 'sendmail'

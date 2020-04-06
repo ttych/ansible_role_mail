@@ -1,0 +1,5 @@
+---
+
+root_group: wheel
+
+mail_sendmail_periodic_conf: /etc/periodic.conf

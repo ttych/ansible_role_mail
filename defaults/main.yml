@@ -1,2 +1,17 @@
 ---
-# defaults file for ansible_role_mail
+
+want_mail:
+
+mail_supported:
+  - postfix
+  - sendmail
+
+root_group: root
+
+mail_sendmail_services:
+  - sendmail
+mail_sendmail_periodic_conf_entries:
+  - daily_clean_hoststat_enable
+  - daily_status_mail_rejects_enable
+  - daily_status_include_submit_mailq
+  - daily_submit_queuerun

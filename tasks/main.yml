@@ -1,2 +1,17 @@
 ---
-# tasks file for ansible_role_mail
+
+- debug:
+    msg: "{{ want_mail }}"
+
+- block:
+    - include: context.yml
+
+    - include: setup_sendmail.yml
+
+    - include: setup_postfix.yml
+
+  when: want_mail in mail_supported or want_mail is none
+
+- name: set has_mail
+  set_fact:
+    has_mail: "{{ want_mail in mail_supported }}"

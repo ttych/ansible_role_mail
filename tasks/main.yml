@@ -1,8 +1,5 @@
 ---
 
-- debug:
-    msg: "{{ want_mail }}"
-
 - block:
     - include: context.yml
 
